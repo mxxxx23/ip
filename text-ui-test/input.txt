@@ -1,5 +1,58 @@
-todo borrow book
-deadline return book /by Sunday
-event project meeting /from Mon 2pm /to 4pm
 list
+
+
+todo
+todo
+todo readbook
+todo     read book with many spaces
+
+deadline
+deadline
+deadline returnbook
+deadline return book/by Sunday
+deadline return book /bySunday
+deadline return book /by    Sunday
+deadline return book /by 3pm
+deadline return book /by3pm
+deadline     return book     /by     3pm
+
+event
+event
+event meeting
+event meeting/from Mon 2pm/to 4pm
+event meeting /fromMon 2pm /to 4pm
+event meeting /from Mon 2pm/to 4pm
+event meeting /from Mon 2pm /to4pm
+event meeting /from Mon 2pm /to 4pm
+event   project meeting    /from   1am    /to   2pm
+event project meeting /from 1am /to 2pm
+
+blah
+unknown command with words
+
+mark
+mark
+mark abc
+mark      abc
+mark 0
+mark -1
+mark 2
+mark 1
+mark  1
+
+unmark
+unmark
+unmark aaaa
+unmark      aaaa
+unmark 0
+unmark -1
+unmark 2
+unmark 1
+unmark  1
+unmark  1   1 21
+unmark 1 1 1
+
+list
+
+
 bye
