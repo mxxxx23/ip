@@ -23,5 +23,14 @@ public class Task {
         this.isDone = false;
     }
 
+    public String getTypeIcon() {
+        return "?";
+    }
+
+    @Override
+    public String toString() {
+        return "[" + this.getTypeIcon() + "]["
+                + this.getStatusIcon() + "] " + description;
+    }
 
 }
