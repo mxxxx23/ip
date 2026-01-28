@@ -1,11 +1,12 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Sago {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        Task[] tasks = new Task[100];
-        int taskCount = 0;
+        ArrayList<Task> tasks = new ArrayList<>();
+        //int taskCount = 0;
 
         System.out.println("Hello! I'm Sago");
         System.out.println("What can I do for you?");
@@ -18,114 +19,95 @@ public class Sago {
                     continue;
                 }
 
-                if (userInput.equals("list")) {
-                    for (int i = 0; i < taskCount; i++) {
-                        System.out.println((i + 1) + "." + tasks[i]);
+                // Parse command + arguments all in one
+                String trimmed = userInput.trim();
+                String[] parts = trimmed.split("\\s+",2);
+                String command = parts[0];
+                String argsText = (parts.length == 2) ? parts[1].trim() : "";
+
+                if (command.equals("list")) {
+                    for (int i = 0; i < tasks.size(); i++) {
+                        System.out.println((i + 1) + "." + tasks.get(i));
                     }
                     continue;
                 }
 
-                if (userInput.startsWith("mark")) {
-                    String[] parts = userInput.trim().split("\\s+", 2);
-                    if (parts.length < 2 || parts[1].trim().isEmpty()) {
-                        throw new SagoException("Please specify a task number to mark");
+                    if (command.equals("delete")) {
+                        int index = parseTaskNumber(argsText, tasks.size(), "delete");
+                        Task removed = tasks.remove(index);
+
+                        System.out.println("Ok. I've removed this task:");
+                        System.out.println("  " + removed);
+                        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+
+                        continue;
+
                     }
 
-                    int index;
-                    try {
-                        index = Integer.parseInt(parts[1].trim()) - 1;
-                    } catch (NumberFormatException e) {
-                        throw new SagoException("Task number must be a number!");
-                    }
 
-                    if (index < 0 || index >= taskCount) {
-                        throw new SagoException("Task number is out of range!");
-                    }
-
-                    tasks[index].markAsDone();
+                if (command.equals("mark")) {
+                    int index = parseTaskNumber(argsText, tasks.size(), "mark");
+                    tasks.get(index).markAsDone();
 
                     System.out.println("Nice! I've marked this task as done:");
-                    System.out.println("[X] " + tasks[index].getDescription());
+                    System.out.println("[X] " + tasks.get(index).getDescription());
 
                     continue;
                 }
 
-                if (userInput.startsWith("unmark")) {
-                    String[] parts = userInput.trim().split("\\s+", 2);
-                    if (parts.length < 2 || parts[1].trim().isEmpty()) {
-                        throw new SagoException("Please specify a task number to unmark");
-                    }
+                if (command.equals("unmark")) {
+                    int index = parseTaskNumber(argsText, tasks.size(), "UNmark");
+                    tasks.get(index).unmark();
 
-                    int index;
-                    try {
-                        index = Integer.parseInt(parts[1].trim()) - 1;
-                    } catch (NumberFormatException e) {
-                        throw new SagoException("Task number must be a number!");
-                    }
-
-                    if (index < 0 || index >= taskCount) {
-                        throw new SagoException("Task number is out of range!");
-                    }
-
-
-                    tasks[index].unmark();
                     System.out.println("OK, I've marked this task as not done yet:");
-                    System.out.println("[ ] " + tasks[index].getDescription());
+                    System.out.println("[ ] " + tasks.get(index).getDescription());
 
                     continue;
                 }
 
 
-                if (userInput.equals("bye")) {
+                if (command.equals("bye")) {
                     System.out.println("Bye. Hope to see you again soon!");
                     break;
                 }
 
-                if (userInput.startsWith("todo")) {
-                    String desc = userInput.length() > 4
-                            ? userInput.substring(4).trim()
-                            : "";
-
-                    if (desc.isEmpty()) {
+                if (command.equals("todo")) {
+                    if (argsText.isEmpty()) {
                         throw new SagoException("Oh no! The description of a todo cannot be empty T-T");
                     }
 
-                    Task t = new Todo(userInput.substring(5).trim());
-                    tasks[taskCount++] = t;
-                    printAdded(t, taskCount);
+                    Task t = new Todo(argsText);
+                    tasks.add(t);
+                    printAdded(t, tasks.size());
                     continue;
 
-                } else if (userInput.startsWith("deadline")) {
-                    String rest = userInput.length() > 8
-                            ? userInput.substring(8).trim()
-                            : "";
+                }
 
-                    if (rest.isEmpty()) {
+                if (command.equals("deadline")) {
+                    if (argsText.isEmpty()) {
                         throw new SagoException("Oh no! The description of a deadline cannot be empty T-T");
                     }
 
-                    String[] parts = rest.split(" /by ", 2);
+                    String[] dParts = argsText.split(" /by ", 2);
                     //String part0 = parts[0].trim();
                     //String part1 = parts[1].trim();
-                    if (parts.length < 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
+                    if (dParts.length < 2 || dParts[0].trim().isEmpty() || dParts[1].trim().isEmpty()) {
                         throw new SagoException("Please use: deadline <desc> /by <time>");
                     }
 
-                    Task t = new Deadline(parts[0].trim(), parts[1].trim());
-                    tasks[taskCount++] = t;
-                    printAdded(t, taskCount);
+                    Task t = new Deadline(dParts[0].trim(), dParts[1].trim());
+                    tasks.add(t);
+                    printAdded(t, tasks.size());
                     continue;
 
-                } else if (userInput.startsWith("event")) {
-                    String rest = userInput.length() > 5
-                            ? userInput.substring(5).trim()
-                            : "";
+                }
 
-                    if (rest.isEmpty()) {
+                if (command.equals("event")) {
+                    if (argsText.isEmpty()) {
                         throw new SagoException("Oh no! The description of an event cannot be empty T-T");
                     }
 
-                    String[] p1 = rest.split(" /from ", 2);
+                    String[] p1 = argsText.split(" /from ", 2);
                     if (p1.length < 2 || p1[0].trim().isEmpty()) {
                         throw new SagoException("Please use: event <desc> /from <start> /to <end>");
                     }
@@ -138,12 +120,14 @@ public class Sago {
                     }
 
                     Task t = new Event(p1[0].trim(), p2[0].trim(), p2[1].trim());
-                    tasks[taskCount++] = t;
-                    printAdded(t, taskCount);
+                    tasks.add(t);
+                    printAdded(t, tasks.size());
                     continue;
-                } else {
-                    throw new SagoException("Oh no! I don't understand what that means T-T");
+
                 }
+
+                throw new SagoException("Oh no! I don't understand what that means T-T");
+
             } catch (SagoException e) {
                 System.out.println(e.getMessage());
             }
@@ -157,5 +141,24 @@ public class Sago {
         System.out.println("Got it. I've added this task:");
         System.out.println("  " + task);
         System.out.println("Now you have " + taskCount + " tasks in the list.");
+    }
+
+    private static int parseTaskNumber(String args, int size, String action) throws SagoException {
+        if (args.isEmpty()) {
+            throw new SagoException("Please specify a task number to " + action);
+        }
+
+        int index;
+        try {
+            index = Integer.parseInt(args) - 1;
+        } catch (NumberFormatException e) {
+            throw new SagoException("Task number must be a number!");
+        }
+
+        if (index < 0 || index >= size) {
+            throw new SagoException("Task number is out of range!");
+        }
+
+        return index;
     }
 }
