@@ -1,0 +1,3 @@
+T | 0 | return book
+D | 0 | sign up workshop | Monday 3pm
+E | 0 | coding assignment | Friday 1pm | Friday 9pm

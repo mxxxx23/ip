@@ -5,8 +5,15 @@ public class Sago {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Task> tasks = new ArrayList<>();
-        //int taskCount = 0;
+        Storage storage = new Storage("data/sago.txt");
+
+        ArrayList<Task> tasks;
+        try {
+            tasks = storage.load();
+        } catch (Exception e) {
+            System.out.println("Oops: I couldn't load your saved tasks. Starting fresh~~");
+            tasks = new ArrayList<>();
+        }
 
         System.out.println("Hello! I'm Sago");
         System.out.println("What can I do for you?");
@@ -36,6 +43,12 @@ public class Sago {
                         int index = parseTaskNumber(argsText, tasks.size(), "delete");
                         Task removed = tasks.remove(index);
 
+                        try {
+                            storage.save(tasks);
+                        } catch (Exception e) {
+                            System.out.println("Oops: I couldn't save your tasks...");
+                        }
+
                         System.out.println("Ok. I've removed this task:");
                         System.out.println("  " + removed);
                         System.out.println("Now you have " + tasks.size() + " tasks in the list.");
@@ -49,6 +62,12 @@ public class Sago {
                     int index = parseTaskNumber(argsText, tasks.size(), "mark");
                     tasks.get(index).markAsDone();
 
+                    try {
+                        storage.save(tasks);
+                    } catch (Exception e) {
+                        System.out.println("Oops: I couldn't save your tasks...");
+                    }
+
                     System.out.println("Nice! I've marked this task as done:");
                     System.out.println("[X] " + tasks.get(index).getDescription());
 
@@ -58,6 +77,12 @@ public class Sago {
                 if (command.equals("unmark")) {
                     int index = parseTaskNumber(argsText, tasks.size(), "UNmark");
                     tasks.get(index).unmark();
+
+                    try {
+                        storage.save(tasks);
+                    } catch (Exception e) {
+                        System.out.println("Oops: I couldn't save your tasks...");
+                    }
 
                     System.out.println("OK, I've marked this task as not done yet:");
                     System.out.println("[ ] " + tasks.get(index).getDescription());
@@ -78,6 +103,13 @@ public class Sago {
 
                     Task t = new Todo(argsText);
                     tasks.add(t);
+
+                    try {
+                        storage.save(tasks);
+                    } catch (Exception e) {
+                        System.out.println("Oops: I couldn't save your tasks...");
+                    }
+
                     printAdded(t, tasks.size());
                     continue;
 
@@ -97,6 +129,13 @@ public class Sago {
 
                     Task t = new Deadline(dParts[0].trim(), dParts[1].trim());
                     tasks.add(t);
+
+                    try {
+                        storage.save(tasks);
+                    } catch (Exception e) {
+                        System.out.println("Oops: I couldn't save your tasks...");
+                    }
+
                     printAdded(t, tasks.size());
                     continue;
 
@@ -121,6 +160,13 @@ public class Sago {
 
                     Task t = new Event(p1[0].trim(), p2[0].trim(), p2[1].trim());
                     tasks.add(t);
+
+                    try {
+                        storage.save(tasks);
+                    } catch (Exception e) {
+                        System.out.println("Oops: I couldn't save your tasks...");
+                    }
+
                     printAdded(t, tasks.size());
                     continue;
 
