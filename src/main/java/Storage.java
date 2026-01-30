@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.zip.DataFormatException;
 
 public class Storage {
     private final String filePath;
@@ -37,6 +40,8 @@ public class Storage {
            Task t = parseLineToTask(line);
            if (t != null) {
                tasks.add(t);
+           } else {
+               System.out.println("Warning: Skipping corrupted line in save file.");
            }
        }
 
@@ -70,12 +75,13 @@ public class Storage {
 
         if (task instanceof Deadline) {
             Deadline d = (Deadline) task;
-            return "D | " + done + " | " + d.description + " | " + d.by;
+            return "D | " + done + " | " + d.description + " | " + d.by.toString();
         }
 
         if (task instanceof Event) {
             Event e = (Event) task;
-            return "E | " + done + " | " + e.description + " | " + e.from + " | " + e.to;
+            return "E | " + done + " | " + e.description + " | "
+                    + e.from.toString() + " | " + e.to.toString();
         }
 
         // fall back
@@ -98,16 +104,35 @@ public class Storage {
 
         if (type.equals("T")) {
             t = new Todo(desc);
+
         } else if (type.equals("D")) {
             if (parts.length < 4) {
                 return null;
             }
-            t = new Deadline(desc, parts[3]);
+
+            LocalDate by;
+            try {
+                by = LocalDate.parse(parts[3]);
+            } catch (DateTimeParseException e) {
+                return null;
+            }
+            t = new Deadline(desc, by);
+
         } else if (type.equals("E")) {
             if (parts.length < 5) {
                 return null;
             }
-            t = new Event(desc, parts[3], parts[4]);
+
+            LocalDate from;
+            LocalDate to;
+            try {
+                from = LocalDate.parse(parts[3]);
+                to = LocalDate.parse(parts[4]);
+            } catch (DateTimeParseException e) {
+                return null;
+            }
+            t = new Event(desc, from, to);
+
         } else {
             return null;
         }
