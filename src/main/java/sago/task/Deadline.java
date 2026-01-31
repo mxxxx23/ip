@@ -1,7 +1,9 @@
+package sago.task;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class Deadline extends Task{
+public class Deadline extends Task {
     protected LocalDate by;
 
     private static final DateTimeFormatter OUTPUT_FORMAT =

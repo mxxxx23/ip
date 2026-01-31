@@ -1,3 +1,5 @@
+package sago;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
@@ -21,11 +23,11 @@ public class Parser {
         try {
             index = Integer.parseInt(args) - 1;
         } catch (NumberFormatException e) {
-            throw new SagoException("Task number must be a number!");
+            throw new SagoException("sago.task.Task number must be a number!");
         }
 
         if (index < 0 || index >= size) {
-            throw new SagoException("Task number is out of range!");
+            throw new SagoException("sago.task.Task number is out of range!");
         }
 
         return index;

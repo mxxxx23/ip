@@ -1,4 +1,4 @@
-# Sago User Guide
+# sago.Sago User Guide
 
 // Update the title above to match the actual product name
 

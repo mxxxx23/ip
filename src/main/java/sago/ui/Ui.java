@@ -1,10 +1,14 @@
+package sago.ui;
+
 import java.util.Scanner;
+import sago.task.Task;
+import sago.task.TaskList;
 
 public class Ui {
     private final Scanner scanner = new Scanner(System.in);
 
     public void showWelcome() {
-        System.out.println("Hello! I'm Sago");
+        System.out.println("Hello! I'm sago.Sago");
         System.out.println("What can I do for you?");
     }
 

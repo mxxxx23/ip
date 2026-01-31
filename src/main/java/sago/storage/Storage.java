@@ -1,3 +1,5 @@
+package sago.storage;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -6,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import sago.task.Task;
+import sago.task.Todo;
+import sago.task.Deadline;
+import sago.task.Event;
 
 public class Storage {
     private final String filePath;
