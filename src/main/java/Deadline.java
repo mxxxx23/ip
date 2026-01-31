@@ -12,6 +12,10 @@ public class Deadline extends Task{
         this.by = by;
     }
 
+    public LocalDate getBy() {
+        return by;
+    }
+
     @Override
     public String getTypeIcon() {
         return "D";
