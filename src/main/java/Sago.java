@@ -1,6 +1,4 @@
-import java.util.ArrayList;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 
 public class Sago {
 
@@ -26,19 +24,16 @@ public class Sago {
                     continue;
                 }
 
-                // Parse command + arguments all in one
-                String trimmed = userInput.trim();
-                String[] parts = trimmed.split("\\s+",2);
-                String command = parts[0];
-                String argsText = (parts.length == 2) ? parts[1].trim() : "";
-
+                String command = Parser.getCommandWord(userInput);
+                String argsText = Parser.getArguments(userInput);
+                
                 if (command.equals("list")) {
                     ui.showList(tasks);
                     continue;
                 }
 
                 if (command.equals("delete")) {
-                    int index = parseTaskNumber(argsText, tasks.size(), "delete");
+                    int index = Parser.parseTaskNumber(argsText, tasks.size(), "delete");
                     Task removed = tasks.remove(index);
 
                     saveTasks(storage, tasks, ui);
@@ -49,7 +44,7 @@ public class Sago {
 
 
                 if (command.equals("mark")) {
-                    int index = parseTaskNumber(argsText, tasks.size(), "mark");
+                    int index = Parser.parseTaskNumber(argsText, tasks.size(), "mark");
                     tasks.get(index).markAsDone();
 
                     saveTasks(storage, tasks, ui);
@@ -58,7 +53,7 @@ public class Sago {
                 }
 
                 if (command.equals("unmark")) {
-                    int index = parseTaskNumber(argsText, tasks.size(), "Unmark");
+                    int index = Parser.parseTaskNumber(argsText, tasks.size(), "unmark");
                     tasks.get(index).unmark();
 
                     saveTasks(storage, tasks, ui);
@@ -96,12 +91,7 @@ public class Sago {
                         throw new SagoException("Please use: deadline <desc> /by <time>");
                     }
 
-                    LocalDate by;
-                    try {
-                        by = LocalDate.parse(dParts[1].trim());
-                    } catch (DateTimeParseException e) {
-                        throw new SagoException("Please use date format yyyy-MM-dd");
-                    }
+                    LocalDate by = Parser.parseDate(dParts[1]);
 
                     Task t = new Deadline(dParts[0].trim(), by);
                     tasks.add(t);
@@ -129,15 +119,8 @@ public class Sago {
                         throw new SagoException("Please use: event <desc> /from <start> /to <end>");
                     }
 
-                    LocalDate from;
-                    LocalDate to;
-
-                    try {
-                        from = LocalDate.parse(p2[0].trim());
-                        to = LocalDate.parse(p2[1].trim());
-                    } catch (DateTimeParseException e) {
-                        throw new SagoException("Please use date format yyyy-MM-dd");
-                    }
+                    LocalDate from = Parser.parseDate(p2[0].trim());
+                    LocalDate to = Parser.parseDate(p2[1].trim());
 
                     Task t = new Event(p1[0].trim(), from, to);
                     tasks.add(t);
@@ -155,26 +138,6 @@ public class Sago {
             }
 
         }
-    }
-
-
-    private static int parseTaskNumber(String args, int size, String action) throws SagoException {
-        if (args.isEmpty()) {
-            throw new SagoException("Please specify a task number to " + action);
-        }
-
-        int index;
-        try {
-            index = Integer.parseInt(args) - 1;
-        } catch (NumberFormatException e) {
-            throw new SagoException("Task number must be a number!");
-        }
-
-        if (index < 0 || index >= size) {
-            throw new SagoException("Task number is out of range!");
-        }
-
-        return index;
     }
 
     private static void saveTasks(Storage storage, TaskList tasks, Ui ui) {
