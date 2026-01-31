@@ -1,5 +1,7 @@
 D | 0 | test | 2026-01-31
 E | 0 | complete assignment 1 | 2026-01-31 | 2026-02-01
-T | 0 | read book
+T | 1 | read book
 D | 0 | submit | 2025-02-01
 E | 0 | meeting | 2025-02-01 | 2025-02-02
+D | 1 | b | 2026-02-03
+E | 1 | c | 2026-02-05 | 2026-02-06

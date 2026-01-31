@@ -1,5 +1,4 @@
 import java.util.Scanner;
-import java.util.ArrayList;
 
 public class Ui {
     private final Scanner scanner = new Scanner(System.in);
@@ -47,7 +46,7 @@ public class Ui {
         System.out.println("[ ] " + task.getDescription());
     }
 
-    public void showList(ArrayList<Task> tasks) {
+    public void showList(TaskList tasks) {
         for (int i = 0; i < tasks.size(); i++) {
             System.out.println((i + 1) + "." + tasks.get(i));
         }

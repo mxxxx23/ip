@@ -8,12 +8,12 @@ public class Sago {
         Ui ui = new Ui();
         Storage storage = new Storage("data/sago.txt");
 
-        ArrayList<Task> tasks;
+        TaskList tasks;
         try {
-            tasks = storage.load();
+            tasks = new TaskList(storage.load());
         } catch (Exception e) {
             ui.showError("Oops: I couldn't load your saved tasks. Starting fresh~~");
-            tasks = new ArrayList<>();
+            tasks = new TaskList();
         }
 
         ui.showWelcome();
@@ -177,9 +177,9 @@ public class Sago {
         return index;
     }
 
-    private static void saveTasks(Storage storage, ArrayList<Task> tasks, Ui ui) {
+    private static void saveTasks(Storage storage, TaskList tasks, Ui ui) {
         try {
-            storage.save(tasks);
+            storage.save(tasks.getTasks());
         } catch (Exception e) {
             ui.showError("Oops: I couldn't save your tasks...");
         }
