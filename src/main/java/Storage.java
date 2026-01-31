@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.zip.DataFormatException;
 
 public class Storage {
     private final String filePath;
@@ -40,9 +39,8 @@ public class Storage {
            Task t = parseLineToTask(line);
            if (t != null) {
                tasks.add(t);
-           } else {
-               System.out.println("Warning: Skipping corrupted line in save file.");
            }
+           // else: silently skip corrupted lines
        }
 
        return tasks;
@@ -50,14 +48,12 @@ public class Storage {
     }
 
     public void save(ArrayList<Task> tasks) throws IOException {
-        FileWriter fw = new FileWriter(filePath);
-
-        for (Task t : tasks) {
-            fw.write(taskToLine(t));
-            fw.write(System.lineSeparator());
+        try (FileWriter fw = new FileWriter(filePath)) {
+            for (Task t : tasks) {
+                fw.write(taskToLine(t));
+                fw.write(System.lineSeparator());
+            }
         }
-
-        fw.close();
     }
 
 
@@ -67,25 +63,25 @@ public class Storage {
         // D | 1 | desc | by
         // E | 0 | desc | from | to
 
-        int done = task.isDone ? 1 : 0;
+        int done = task.isDone() ? 1 : 0;
 
         if (task instanceof Todo) {
-            return "T | " + done + " | " + task.description;
+            return "T | " + done + " | " + task.getDescription();
         }
 
         if (task instanceof Deadline) {
             Deadline d = (Deadline) task;
-            return "D | " + done + " | " + d.description + " | " + d.by.toString();
+            return "D | " + done + " | " + d.getDescription() + " | " + d.getBy().toString();
         }
 
         if (task instanceof Event) {
             Event e = (Event) task;
-            return "E | " + done + " | " + e.description + " | "
-                    + e.from.toString() + " | " + e.to.toString();
+            return "E | " + done + " | " + e.getDescription() + " | "
+                    + e.getFrom().toString() + " | " + e.getTo().toString();
         }
 
         // fall back
-        return "? | " + done + " | " + task.description;
+        return "? | " + done + " | " + task.getDescription();
     }
 
     private Task parseLineToTask(String line) {
