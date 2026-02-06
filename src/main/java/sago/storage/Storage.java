@@ -13,6 +13,10 @@ import sago.task.Todo;
 import sago.task.Deadline;
 import sago.task.Event;
 
+/**
+ * Handles loading tasks from and saving tasks to the local storage.
+ * Responsible for reading and writing task data in a persistent format.
+ */
 public class Storage {
     private final String filePath;
 
