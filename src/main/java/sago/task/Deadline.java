@@ -48,7 +48,7 @@ public class Deadline extends Task {
      * @return Formatted deadline string.
      */
     @Override
-    public String toString(){
+    public String toString() {
         return "[" + this.getTypeIcon() + "]["
                 + this.getStatusIcon() + "] "
                 + this.description
