@@ -25,10 +25,6 @@ public class Ui {
         return scanner.nextLine();
     }
 
-    public void showLine() {
-        System.out.println("____________________________________________________________");
-    }
-
     /**
      * Displays an error message to the user.
      *
