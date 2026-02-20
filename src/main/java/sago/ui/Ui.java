@@ -4,6 +4,10 @@ import java.util.Scanner;
 import sago.task.Task;
 import sago.task.TaskList;
 
+/**
+ * Handles user interface interactions for the application.
+ * Responsible for displaying messages and formatting output shown to the user.
+ */
 public class Ui {
     private final Scanner scanner = new Scanner(System.in);
 
@@ -12,14 +16,20 @@ public class Ui {
         System.out.println("What can I do for you?");
     }
 
+    /**
+     * Reads a command entered by the user from standard input.
+     *
+     * @return Raw user input string.
+     */
     public String readCommand() {
         return scanner.nextLine();
     }
 
-    public void showLine() {
-        System.out.println("____________________________________________________________");
-    }
-
+    /**
+     * Displays an error message to the user.
+     *
+     * @param message Error message to display.
+     */
     public void showError(String message) {
         System.out.println(message);
     }
@@ -50,6 +60,11 @@ public class Ui {
         System.out.println("  " + task);
     }
 
+    /**
+     * Displays the list of tasks with their corresponding indices.
+     *
+     * @param tasks Task list to display.
+     */
     public void showList(TaskList tasks) {
         for (int i = 0; i < tasks.size(); i++) {
             System.out.println((i + 1) + "." + tasks.get(i));
