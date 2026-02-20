@@ -147,6 +147,16 @@ public class Sago {
 
                 }
 
+                if (command.equals("find")) {
+                    if (argsText.trim().isEmpty()) {
+                        throw new SagoException("Please provide a keyword to find.");
+                    }
+
+                    TaskList matches = tasks.find(argsText.trim());
+                    ui.showFindResults(matches);
+                    continue;
+                }
+
                 throw new SagoException("Oh no! I don't understand what that means T-T");
 
             } catch (SagoException e) {

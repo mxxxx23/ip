@@ -60,6 +60,18 @@ public class Ui {
         System.out.println("  " + task);
     }
 
+    public void showFindResults(TaskList matches) {
+        if (matches.size() == 0) {
+            System.out.println("No matching tasks found.");
+            return;
+        }
+
+        System.out.println("Here are the matching tasks in your list:");
+        for (int i = 0; i < matches.size(); i++) {
+            System.out.println((i + 1) + "." + matches.get(i));
+        }
+    }
+
     /**
      * Displays the list of tasks with their corresponding indices.
      *

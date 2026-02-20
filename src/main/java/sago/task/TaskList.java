@@ -37,4 +37,16 @@ public class TaskList {
         return tasks;
     }
 
+    public TaskList find(String keyword) {
+        TaskList matchedTasks = new TaskList();
+        String lowerKeyword = keyword.toLowerCase();
+
+        for (Task task : tasks) { // adjust if your internal list name differs
+            if (task.getDescription().toLowerCase().contains(lowerKeyword)) {
+                matchedTasks.add(task);
+            }
+        }
+        return matchedTasks;
+    }
+
 }
