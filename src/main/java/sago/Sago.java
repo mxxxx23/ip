@@ -9,7 +9,13 @@ import sago.task.Todo;
 import sago.task.Deadline;
 import sago.task.Event;
 
-
+/**
+ * Entry point of the Sago task manager application.
+ * Coordinates the main program flow by reading user input, delegating parsing to {@link Parser},
+ * applying changes to the {@link sago.task.TaskList}, and persisting updates via {@link sago.storage.Storage}.
+ *
+ * <p>All user-facing messages are handled through {@link sago.ui.Ui}.</p>
+ */
 public class Sago {
 
     public static void main(String[] args) {

@@ -2,6 +2,10 @@ package sago.task;
 
 import java.util.ArrayList;
 
+/**
+ * Represents a list of tasks in the application.
+ * Provides operations to add, remove, and get tasks.
+ */
 public class TaskList {
     private final ArrayList<Task> tasks;
 
