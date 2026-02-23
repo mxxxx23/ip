@@ -31,6 +31,7 @@ public class Main extends Application {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
             Scene scene = new Scene(loader.load(), 450, 600);
             stage.setScene(scene);
+            stage.setTitle("Sago");
 
             stage.setMinWidth(400);
             stage.setMinHeight(500);
