@@ -2,69 +2,73 @@ package sago.task;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
+
+/*
+ * AI-Assisted Coding (A-AiAssisted)
+ *
+ * Tool used: ChatGPT.
+ *
+ * AI assistance:
+ * - Reviewed Event class for code quality improvements.
+ * - Suggested making date fields immutable (final).
+ * - Suggested adding validation to ensure start date is not after end date.
+ * - Suggested small refactor (helper method for date formatting).
+ *
+ * All changes were manually reviewed and tested before committing.
+ */
 
 /**
  * Represents an event task that occurs within a date range.
  */
 public class Event extends Task {
-    protected LocalDate from;
-    protected LocalDate to;
-
     private static final DateTimeFormatter OUTPUT_FORMAT =
             DateTimeFormatter.ofPattern("MMM dd yyyy");
+
+    private final LocalDate from;
+    private final LocalDate to;
 
     /**
      * Constructs an event task with the given description and date range.
      *
      * @param description Description of the event.
-     * @param from Start date of the event.
-     * @param to End date of the event.
+     * @param from Start date of the event (inclusive).
+     * @param to End date of the event (inclusive).
+     * @throws NullPointerException if from or to is null
+     * @throws IllegalArgumentException if from is after to
      */
     public Event(String description, LocalDate from, LocalDate to) {
         super(description);
-        this.from = from;
-        this.to = to;
+        this.from = Objects.requireNonNull(from, "from date cannot be null");
+        this.to = Objects.requireNonNull(to, "to date cannot be null");
+
+        if (this.from.isAfter(this.to)) {
+            throw new IllegalArgumentException("from date cannot be after to date");
+        }
     }
 
-    /**
-     * Returns the start date of this event.
-     *
-     * @return Start date.
-     */
     public LocalDate getFrom() {
         return from;
     }
 
-    /**
-     * Returns the end date of this event.
-     *
-     * @return End date.
-     */
     public LocalDate getTo() {
         return to;
     }
 
-    /**
-     * Returns the type icon for an event task.
-     *
-     * @return "E".
-     */
     @Override
     public String getTypeIcon() {
         return "E";
     }
 
-    /**
-     * Returns the string representation of this event, including its date range.
-     *
-     * @return Formatted event string.
-     */
     @Override
     public String toString() {
-        return "[" + this.getTypeIcon() + "]["
-                + this.getStatusIcon() + "] "
-                + this.description
-                + " (from: " + from.format(OUTPUT_FORMAT)
-                + " to: " + to.format(OUTPUT_FORMAT) + ")";
+        return "[" + getTypeIcon() + "][" + getStatusIcon() + "] "
+                + description
+                + " (from: " + formatDate(from)
+                + " to: " + formatDate(to) + ")";
+    }
+
+    private static String formatDate(LocalDate date) {
+        return date.format(OUTPUT_FORMAT);
     }
 }
