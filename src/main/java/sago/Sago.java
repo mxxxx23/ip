@@ -18,11 +18,26 @@ import sago.task.Event;
  */
 public class Sago {
 
+    private final Storage storage;
+    private TaskList tasks;
+    private boolean isExit;
+
+    public Sago() {
+        this.storage = new Storage("data/sago.txt");
+        try {
+            this.tasks = new TaskList(storage.load());
+        } catch (Exception e) {
+            this.tasks = new TaskList();
+        }
+        this.isExit = false;
+    }
+
     public static void main(String[] args) {
         Ui ui = new Ui();
         Storage storage = new Storage("data/sago.txt");
 
         TaskList tasks;
+
         try {
             tasks = new TaskList(storage.load());
         } catch (Exception e) {
@@ -173,4 +188,144 @@ public class Sago {
             ui.showError("Oops: I couldn't save your tasks...");
         }
     }
+
+
+    public String getResponse(String userInput) {
+        try {
+            if (userInput == null || userInput.trim().isEmpty()) {
+                throw new SagoException("Please type something 😭");
+            }
+
+            String command = Parser.getCommandWord(userInput);
+            String argsText = Parser.getArguments(userInput);
+
+            switch (command) {
+                case "list":
+                    return formatList();
+
+                case "delete": {
+                    int index = Parser.parseTaskNumber(argsText, tasks.size(), "delete");
+                    Task removed = tasks.remove(index);
+                    saveTasks(storage, tasks);
+                    return "Noted. I've removed this task:\n  " + removed
+                            + "\nNow you have " + tasks.size() + " tasks in the list.";
+                }
+
+                case "mark": {
+                    int index = Parser.parseTaskNumber(argsText, tasks.size(), "mark");
+                    tasks.get(index).markAsDone();
+                    saveTasks(storage, tasks);
+                    return "Nice! I've marked this task as done:\n  " + tasks.get(index);
+                }
+
+                case "unmark": {
+                    int index = Parser.parseTaskNumber(argsText, tasks.size(), "unmark");
+                    tasks.get(index).unmark();
+                    saveTasks(storage, tasks);
+                    return "OK, I've marked this task as not done yet:\n  " + tasks.get(index);
+                }
+
+                case "todo": {
+                    if (argsText.isEmpty()) {
+                        throw new SagoException("Oh no! The description of a todo cannot be empty T-T");
+                    }
+                    Task t = new Todo(argsText);
+                    tasks.add(t);
+                    saveTasks(storage, tasks);
+                    return "Got it. I've added this task:\n  " + t
+                            + "\nNow you have " + tasks.size() + " tasks in the list.";
+                }
+
+                case "deadline": {
+                    if (argsText.isEmpty()) {
+                        throw new SagoException("Oh no! The description of a deadline cannot be empty T-T");
+                    }
+                    String[] dParts = argsText.split(" /by ", 2);
+                    if (dParts.length < 2 || dParts[0].trim().isEmpty() || dParts[1].trim().isEmpty()) {
+                        throw new SagoException("Please use: deadline <desc> /by <time>");
+                    }
+                    LocalDate by = Parser.parseDate(dParts[1]);
+                    Task t = new Deadline(dParts[0].trim(), by);
+                    tasks.add(t);
+                    saveTasks(storage, tasks);
+                    return "Got it. I've added this task:\n  " + t
+                            + "\nNow you have " + tasks.size() + " tasks in the list.";
+                }
+
+                case "event": {
+                    if (argsText.isEmpty()) {
+                        throw new SagoException("Oh no! The description of an event cannot be empty T-T");
+                    }
+                    String[] p1 = argsText.split(" /from ", 2);
+                    if (p1.length < 2 || p1[0].trim().isEmpty()) {
+                        throw new SagoException("Please use: event <desc> /from <start> /to <end>");
+                    }
+                    String[] p2 = p1[1].split(" /to ", 2);
+                    if (p2.length < 2 || p2[0].trim().isEmpty() || p2[1].trim().isEmpty()) {
+                        throw new SagoException("Please use: event <desc> /from <start> /to <end>");
+                    }
+                    LocalDate from = Parser.parseDate(p2[0].trim());
+                    LocalDate to = Parser.parseDate(p2[1].trim());
+                    Task t = new Event(p1[0].trim(), from, to);
+                    tasks.add(t);
+                    saveTasks(storage, tasks);
+                    return "Got it. I've added this task:\n  " + t
+                            + "\nNow you have " + tasks.size() + " tasks in the list.";
+                }
+
+                case "find": {
+                    if (argsText.trim().isEmpty()) {
+                        throw new SagoException("Please provide a keyword to find.");
+                    }
+                    TaskList matches = tasks.find(argsText.trim());
+                    return formatFind(matches, argsText.trim());
+                }
+
+                case "bye":
+                    isExit = true;
+                    return "Bye. Hope to see you again soon!";
+
+                default:
+                    throw new SagoException("Oh no! I don't understand what that means T-T");
+            }
+        } catch (SagoException e) {
+            return "Error: " + e.getMessage();
+        }
+    }
+
+    public boolean isExit() {
+        return isExit;
+    }
+
+    private String formatList() {
+        if (tasks.size() == 0) {
+            return "Your task list is empty.";
+        }
+        StringBuilder sb = new StringBuilder("Here are the tasks in your list:\n");
+        for (int i = 0; i < tasks.size(); i++) {
+            sb.append(i + 1).append(". ").append(tasks.get(i)).append("\n");
+        }
+        return sb.toString().trim();
+    }
+
+    private String formatFind(TaskList matches, String keyword) {
+        if (matches.size() == 0) {
+            return "No matching tasks found for: " + keyword;
+        }
+        StringBuilder sb = new StringBuilder("Matching tasks:\n");
+        for (int i = 0; i < matches.size(); i++) {
+            sb.append(i + 1).append(". ").append(matches.get(i)).append("\n");
+        }
+        return sb.toString().trim();
+    }
+
+    private static void saveTasks(Storage storage, TaskList tasks) {
+        try {
+            storage.save(tasks.getTasks());
+        } catch (Exception e) {
+            // GUI version: just swallow; response already returned
+        }
+    }
+
+
 }
