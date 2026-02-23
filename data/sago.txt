@@ -1,5 +1,5 @@
-E | 0 | complete assignment 1 | 2026-01-31 | 2026-02-01
-T | 1 | read book
+E | 1 | complete assignment 1 | 2026-01-31 | 2026-02-01
+T | 0 | read book
 D | 0 | submit | 2025-02-01
 E | 0 | meeting | 2025-02-01 | 2025-02-02
 D | 1 | finish presentation slides | 2026-01-31

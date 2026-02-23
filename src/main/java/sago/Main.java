@@ -64,8 +64,8 @@ public class Main extends Application {
         String response = sago.getResponse(input);
 
         dialogContainer.getChildren().addAll(
-                new DialogBox(input, userImage),
-                new DialogBox(response, sagoImage)
+                DialogBox.getUserDialog(input, userImage),
+                DialogBox.getSagoDialog(response, sagoImage)
         );
 
         userInput.clear();
