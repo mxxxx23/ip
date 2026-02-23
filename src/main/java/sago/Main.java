@@ -19,6 +19,9 @@ public class Main extends Application {
 
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
 
+    private final Sago sago = new Sago();
+    private Image sagoImage = new Image(this.getClass().getResourceAsStream("/images/DaSago.png"));
+
     @Override
     public void start(Stage stage) {
         scrollPane = new ScrollPane();
@@ -57,7 +60,19 @@ public class Main extends Application {
     }
 
     private void handleUserInput() {
-        dialogContainer.getChildren().addAll(new DialogBox(userInput.getText(), userImage));
+        String input = userInput.getText();
+        String response = sago.getResponse(input);
+
+        dialogContainer.getChildren().addAll(
+                new DialogBox(input, userImage),
+                new DialogBox(response, sagoImage)
+        );
+
         userInput.clear();
+
+        if (sago.isExit()) {
+            // optional: close the window immediately
+            // ((Stage) userInput.getScene().getWindow()).close();
+        }
     }
 }
