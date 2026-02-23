@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="sago.MainWindow">
+    <children>
+        <ScrollPane fx:id="scrollPane" fitToWidth="true"
+                    AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                    AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="50.0">
+            <content>
+                <VBox fx:id="dialogContainer" spacing="10.0" />
+            </content>
+        </ScrollPane>
+
+        <TextField fx:id="userInput"
+                   AnchorPane.leftAnchor="0.0"
+                   AnchorPane.rightAnchor="76.0"
+                   AnchorPane.bottomAnchor="0.0"
+                   onAction="#handleUserInput" />
+
+        <Button text="Send"
+                AnchorPane.rightAnchor="0.0"
+                AnchorPane.bottomAnchor="0.0"
+                onAction="#handleUserInput" />
+    </children>
+</AnchorPane>

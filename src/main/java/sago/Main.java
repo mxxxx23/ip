@@ -9,6 +9,9 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import java.io.IOException;
 
 public class Main extends Application {
 
@@ -24,39 +27,22 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-        scrollPane = new ScrollPane();
-        dialogContainer = new VBox();
-        userInput = new TextField();
-        sendButton = new Button("Send");
+        try {
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
+            Scene scene = new Scene(loader.load(), 450, 600);
+            stage.setScene(scene);
 
-        scrollPane.setContent(dialogContainer);
-        scrollPane.setFitToWidth(true);
+            stage.setMinWidth(400);
+            stage.setMinHeight(500);
+            stage.setResizable(true);
 
-        AnchorPane root = new AnchorPane();
-        root.getChildren().addAll(scrollPane, userInput, sendButton);
+            MainWindow controller = loader.getController();
+            controller.setSago(new Sago());
 
-        AnchorPane.setTopAnchor(scrollPane, 0.0);
-        AnchorPane.setLeftAnchor(scrollPane, 0.0);
-        AnchorPane.setRightAnchor(scrollPane, 0.0);
-        AnchorPane.setBottomAnchor(scrollPane, 50.0);
-
-        AnchorPane.setLeftAnchor(userInput, 0.0);
-        AnchorPane.setBottomAnchor(userInput, 0.0);
-        AnchorPane.setRightAnchor(userInput, 76.0); // leave space for button
-
-        AnchorPane.setRightAnchor(sendButton, 0.0);
-        AnchorPane.setBottomAnchor(sendButton, 0.0);
-
-        // Auto-scroll to bottom when new messages appear
-        dialogContainer.heightProperty().addListener((observable) -> scrollPane.setVvalue(1.0));
-
-        // Handle user input (both mouse click + Enter)
-        sendButton.setOnMouseClicked((event) -> handleUserInput());
-        userInput.setOnAction((event) -> handleUserInput());
-
-        Scene scene = new Scene(root, 400, 600);
-        stage.setScene(scene);
-        stage.show();
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void handleUserInput() {
