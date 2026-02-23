@@ -92,6 +92,10 @@ public class Sago {
                     continue;
                 }
 
+                if (command.equals("help")) {
+                    ui.showHelp(getHelpMessage());
+                    continue;
+                }
 
                 if (command.equals("bye")) {
                     ui.showBye();
@@ -281,6 +285,9 @@ public class Sago {
                     return formatFind(matches, argsText.trim());
                 }
 
+                case "help":
+                    return getHelpMessage();
+
                 case "bye":
                     isExit = true;
                     return "Bye. Hope to see you again soon!";
@@ -306,6 +313,25 @@ public class Sago {
             sb.append(i + 1).append(". ").append(tasks.get(i)).append("\n");
         }
         return sb.toString().trim();
+    }
+
+    /**
+     * Returns a user-facing help message listing available commands and formats.
+     *
+     * @return Help message string.
+     */
+    private static String getHelpMessage() {
+        return "Here are the available commands:\n"
+                + "list\n"
+                + "todo <description>\n"
+                + "deadline <description> /by <yyyy-MM-dd>\n"
+                + "event <description> /from <yyyy-MM-dd> /to <yyyy-MM-dd>\n"
+                + "mark <taskNumber>\n"
+                + "unmark <taskNumber>\n"
+                + "delete <taskNumber>\n"
+                + "find <keyword>\n"
+                + "help\n"
+                + "bye";
     }
 
     private String formatFind(TaskList matches, String keyword) {
