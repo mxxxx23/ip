@@ -22,14 +22,17 @@ public class TaskList {
     }
 
     public Task get(int index) {
+        assert index >= 0 && index < tasks.size() : "index out of bounds: " + index;
         return tasks.get(index);
     }
 
     public void add(Task task) {
+        assert task != null : "task should not be null";
         tasks.add(task);
     }
 
     public Task remove(int index) {
+        assert index >= 0 && index < tasks.size() : "index out of bounds: " + index;
         return tasks.remove(index);
     }
 
@@ -38,6 +41,8 @@ public class TaskList {
     }
 
     public TaskList find(String keyword) {
+        assert keyword != null : "keyword should not be null";
+
         TaskList matchedTasks = new TaskList();
         String lowerKeyword = keyword.toLowerCase();
 

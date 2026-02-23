@@ -21,6 +21,11 @@ public class Parser {
      * @return The command word (first token), or an empty string if the input is blank.
      */
     public static String getCommandWord(String userInput) {
+        assert userInput != null : "userInput should not be null";
+        String trimmed = userInput.trim();
+        if (trimmed.isEmpty()) {
+            return "";
+        }
         return userInput.trim().split("\\s+",2)[0];
     }
 
@@ -31,7 +36,13 @@ public class Parser {
      * @return Argument text after the command word, trimmed. Returns an empty string if no arguments exist.
      */
     public static String getArguments(String userInput) {
-        String[] parts = userInput.trim().split("\\s+",2);
+        assert userInput != null : "userInput should not be null";
+        String trimmed = userInput.trim();
+        if (trimmed.isEmpty()) {
+            return "";
+        }
+        String[] parts = trimmed.split("\\s+", 2);
+        assert parts.length >= 1 : "split must produce at least 1 part";
         return (parts.length == 2) ? parts[1].trim() : "";
     }
 
@@ -46,6 +57,10 @@ public class Parser {
      * @throws SagoException If the task number is missing, not a number, or out of range.
      */
     public static int parseTaskNumber(String args, int size, String action) throws SagoException {
+        assert args != null : "args should not be null";
+        assert action != null : "action should not be null";
+        assert size >= 0 : "size should not be negative";
+
         if (args.isEmpty()) {
             throw new SagoException("Please specify a task number to " + action);
         }
@@ -72,6 +87,8 @@ public class Parser {
      * @throws SagoException If the date format is invalid.
      */
     public static LocalDate parseDate(String text) throws SagoException {
+        assert text != null : "date text should not be null";
+
         try {
             return LocalDate.parse(text.trim());
         } catch (DateTimeParseException e) {
