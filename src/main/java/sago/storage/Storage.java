@@ -21,11 +21,13 @@ public class Storage {
     private final String filePath;
 
     public Storage(String filePath) {
+        assert filePath != null && !filePath.isBlank() : "filePath should not be null/blank";
         this.filePath = filePath;
     }
 
     public ArrayList<Task> load() throws IOException {
-       File file = new File(filePath);
+        assert filePath != null && !filePath.isBlank() : "filePath should not be null/blank";
+        File file = new File(filePath);
 
        // create folder if missing
        File parent = file.getParentFile();
@@ -58,6 +60,9 @@ public class Storage {
     }
 
     public void save(ArrayList<Task> tasks) throws IOException {
+        assert tasks != null : "tasks should not be null";
+        assert filePath != null && !filePath.isBlank() : "filePath should not be null/blank";
+
         try (FileWriter fw = new FileWriter(filePath)) {
             for (Task t : tasks) {
                 fw.write(taskToLine(t));
@@ -95,6 +100,8 @@ public class Storage {
     }
 
     private Task parseLineToTask(String line) {
+        assert line != null : "line should not be null";
+
         // Split using " | " with optional spaces around |
         String[] parts = line.split("\\s*\\|\\s*");
 

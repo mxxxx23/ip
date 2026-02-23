@@ -24,6 +24,10 @@ public class MainWindow {
 
     @FXML
     public void initialize() {
+        assert scrollPane != null : "scrollPane was not injected (check fx:id in FXML)";
+        assert dialogContainer != null : "dialogContainer was not injected (check fx:id in FXML)";
+        assert userInput != null : "userInput was not injected (check fx:id in FXML)";
+
         // Auto-scroll
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
     }
@@ -38,7 +42,9 @@ public class MainWindow {
 
     @FXML
     private void handleUserInput() {
+        assert sago != null : "sago should be set before handling input";
         String input = userInput.getText();
+        assert input != null : "TextField#getText() should not return null";
         String response = sago.getResponse(input);
 
         dialogContainer.getChildren().addAll(
