@@ -83,4 +83,8 @@ public class Ui {
         }
     }
 
+    public void showHelp(String msg) {
+        System.out.println(msg);
+    }
+
 }
