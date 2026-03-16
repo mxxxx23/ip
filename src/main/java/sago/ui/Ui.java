@@ -34,6 +34,10 @@ public class Ui {
         System.out.println(message);
     }
 
+    public void showMessage(String message) {
+        System.out.println(message);
+    }
+
     public void showBye(){
         System.out.println("Bye. Hope to see you again soon!");
     }
