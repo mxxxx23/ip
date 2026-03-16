@@ -53,8 +53,5 @@ public class MainWindow {
         );
 
         userInput.clear();
-
-        // Optional: close on bye
-        // if (sago.isExit()) { ((Stage) dialogContainer.getScene().getWindow()).close(); }
     }
 }

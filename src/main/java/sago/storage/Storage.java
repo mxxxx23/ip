@@ -113,49 +113,67 @@ public class Storage {
         boolean isDone = parts[1].equals("1");
         String desc = parts[2];
 
-        Task t;
-
-        if (type.equals("T")) {
-            t = new Todo(desc);
-
-        } else if (type.equals("D")) {
-            if (parts.length < 4) {
-                return null;
-            }
-
-            LocalDate by;
-            try {
-                by = LocalDate.parse(parts[3]);
-            } catch (DateTimeParseException e) {
-                return null;
-            }
-            t = new Deadline(desc, by);
-
-        } else if (type.equals("E")) {
-            if (parts.length < 5) {
-                return null;
-            }
-
-            LocalDate from;
-            LocalDate to;
-            try {
-                from = LocalDate.parse(parts[3]);
-                to = LocalDate.parse(parts[4]);
-            } catch (DateTimeParseException e) {
-                return null;
-            }
-            t = new Event(desc, from, to);
-
-        } else {
+        Task task = parseTaskByType(type, parts, desc);
+        if (task == null) {
             return null;
         }
 
         if (isDone) {
-            t.markAsDone();
+            task.markAsDone();
         }
 
-        return t;
+        return task;
+    }
 
+    private Task parseTaskByType(String type, String[] parts, String desc) {
+        if (type.equals("T")) {
+            return parseTodo(desc);
+        } else if (type.equals("D")) {
+            return parseDeadline(parts, desc);
+        } else if (type.equals("E")) {
+            return parseEvent(parts, desc);
+        } else {
+            return null;
+        }
+    }
+
+    private Task parseTodo(String desc) {
+        return new Todo(desc);
+    }
+
+    private Task parseDeadline(String[] parts, String desc) {
+        if (parts.length < 4) {
+            return null;
+        }
+
+        LocalDate by = parseStoredDate(parts[3]);
+        if (by == null) {
+            return null;
+        }
+
+        return new Deadline(desc, by);
+    }
+
+    private Task parseEvent(String[] parts, String desc) {
+        if (parts.length < 5) {
+            return null;
+        }
+
+        LocalDate from = parseStoredDate(parts[3]);
+        LocalDate to = parseStoredDate(parts[4]);
+        if (from == null || to == null) {
+            return null;
+        }
+
+        return new Event(desc, from, to);
+    }
+
+    private LocalDate parseStoredDate(String text) {
+        try {
+            return LocalDate.parse(text);
+        } catch (DateTimeParseException e) {
+            return null;
+        }
     }
 
 }
