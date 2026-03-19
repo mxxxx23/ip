@@ -19,16 +19,12 @@ unmarking, deleting, and finding tasks.
 ## Quick Start
 
 1. Ensure you have Java 17 installed.
-2. Build the jar:
+2. Download the latest `sago.jar` file from the GitHub Releases page.
+3. Open a terminal in the folder containing `sago.jar`.
+4. Run:
 
 ```bash
-./gradlew shadowJar
-```
-
-3. Run the app:
-
-```bash
-java -jar build/libs/sago.jar
+java -jar sago.jar
 ```
 
 ## Features

@@ -29,8 +29,8 @@ It supports fast keyboard interaction while providing a clean graphical interfac
 > [!IMPORTANT]
 > Ensure you have **Java 17** installed before running the application.
 
-1. Download the latest `.jar` file from the **GitHub Releases** page.
-2. Open a terminal in the folder containing the `.jar` file.
+1. Download the latest `sago.jar` file from the **GitHub Releases** page.
+2. Open a terminal in the folder containing `sago.jar`.
 3. Run:
 
 ```
