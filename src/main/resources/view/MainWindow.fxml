@@ -21,7 +21,8 @@
                    AnchorPane.bottomAnchor="0.0"
                    onAction="#handleUserInput" />
 
-        <Button text="Send"
+        <Button fx:id="sendButton"
+                text="Send"
                 AnchorPane.rightAnchor="0.0"
                 AnchorPane.bottomAnchor="0.0"
                 onAction="#handleUserInput" />

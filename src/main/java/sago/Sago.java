@@ -193,7 +193,12 @@ public class Sago {
         }
         LocalDate from = Parser.parseDate(p2[0].trim());
         LocalDate to = Parser.parseDate(p2[1].trim());
-        Task task = new Event(p1[0].trim(), from, to);
+        Task task;
+        try {
+            task = new Event(p1[0].trim(), from, to);
+        } catch (IllegalArgumentException e) {
+            throw new SagoException("Event start date cannot be after end date.");
+        }
         tasks.add(task);
         saveTasks(storage, tasks);
         return "Got it. I've added this task:\n  " + task

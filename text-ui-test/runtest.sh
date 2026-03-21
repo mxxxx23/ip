@@ -1,34 +1,30 @@
 #!/usr/bin/env bash
 
-# create bin directory if it doesn't exist
-if [ ! -d "../bin" ]
-then
-    mkdir ../bin
-fi
+set -e
 
-# delete output from previous run
-if [ -e "./ACTUAL.TXT" ]
-then
-    rm ACTUAL.TXT
-fi
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+BIN_DIR="$PROJECT_DIR/bin/text-ui-test"
+RUN_DIR="$SCRIPT_DIR/run-env"
+ACTUAL_FILE="$SCRIPT_DIR/ACTUAL.TXT"
 
-# compile the code into the bin folder, terminates if error occurred
-if ! javac -Xlint:none -d ../bin ../src/main/java/*.java
+mkdir -p "$BIN_DIR" "$RUN_DIR/data"
+rm -f "$ACTUAL_FILE" "$RUN_DIR/data/sago.txt"
+
+if ! find "$PROJECT_DIR/src/main/java" -name '*.java' \
+    ! -name 'Main.java' \
+    ! -name 'MainWindow.java' \
+    ! -name 'DialogBox.java' \
+    ! -name 'Launcher.java' \
+    -print0 | xargs -0 javac -Xlint:none -d "$BIN_DIR"
 then
     echo "********** BUILD FAILURE **********"
     exit 1
 fi
 
-# run the program, feed commands from input.txt file and redirect the output to the ACTUAL.TXT
-java -classpath ../bin Sago < input.txt > ACTUAL.TXT
+(cd "$RUN_DIR" && java -cp "$BIN_DIR" sago.Sago < "$SCRIPT_DIR/input.txt" > "$ACTUAL_FILE")
 
-# convert to UNIX format
-# cp EXPECTED.TXT EXPECTED-UNIX.TXT
-# dos2unix ACTUAL.TXT EXPECTED-UNIX.TXT
-
-# compare the output to the expected output
-diff ACTUAL.TXT EXPECTED.TXT
-if [ $? -eq 0 ]
+if diff "$ACTUAL_FILE" "$SCRIPT_DIR/EXPECTED.TXT"
 then
     echo "Test result: PASSED"
     exit 0

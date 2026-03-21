@@ -33,6 +33,7 @@ java -jar sago.jar
 - Mark and unmark tasks
 - Delete tasks
 - Find tasks by keyword
+- View help and exit with `bye`
 - Use the app through a JavaFX chat-style interface
 
 For full command details and examples, see the [User Guide](docs/README.md).

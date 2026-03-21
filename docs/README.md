@@ -18,6 +18,7 @@ It supports fast keyboard interaction while providing a clean graphical interfac
     - [Delete a Task](#-delete-a-task)
     - [Find Tasks](#-find-tasks)
     - [Help](#-help)
+    - [Exit](#-exit)
 - [Command Summary](#-command-summary)
 - [Screenshot](#-screenshot)
 - [Notes](#-notes)
@@ -191,6 +192,16 @@ help
 
 ---
 
+### 👋 Exit
+
+Closes the current session.
+
+```
+bye
+```
+
+---
+
 ## 📌 Command Summary
 
 | Action | Command |
@@ -204,6 +215,7 @@ help
 | Delete Task | `delete INDEX` |
 | Find Tasks | `find KEYWORD` |
 | Help | `help` |
+| Exit | `bye` |
 
 ---
 
@@ -218,6 +230,7 @@ help
 > [!NOTE]
 > - Task indices start from **1**.
 > - Dates must follow the format `YYYY-MM-DD`.
+> - For `event`, the start date must not be later than the end date.
 > - Data is automatically saved after each command.
 > - Invalid commands will display an error message.
 

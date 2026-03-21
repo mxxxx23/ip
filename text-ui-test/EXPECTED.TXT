@@ -1,78 +1,33 @@
-Hello! I'm sago.Sago
+Hello! I'm Sago.
 What can I do for you?
-Oh no! The description of a todo cannot be empty T-T
+Your task list is empty.
 Oh no! The description of a todo cannot be empty T-T
 Got it. I've added this task:
-  [T][ ] readbook
+  [T][ ] read book
 Now you have 1 tasks in the list.
 Got it. I've added this task:
-  [T][ ] read book with many spaces
+  [D][ ] return book (by: Mar 31 2026)
 Now you have 2 tasks in the list.
-Oh no! The description of a deadline cannot be empty T-T
-Oh no! The description of a deadline cannot be empty T-T
-Please use: deadline <desc> /by <time>
-Please use: deadline <desc> /by <time>
-Please use: deadline <desc> /by <time>
 Got it. I've added this task:
-  [D][ ] return book (by: Sunday)
+  [E][ ] hackathon (from: Apr 01 2026 to: Apr 02 2026)
 Now you have 3 tasks in the list.
-Got it. I've added this task:
-  [D][ ] return book (by: 3pm)
-Now you have 4 tasks in the list.
-Please use: deadline <desc> /by <time>
-Got it. I've added this task:
-  [D][ ] return book (by: 3pm)
-Now you have 5 tasks in the list.
-Oh no! The description of an event cannot be empty T-T
-Oh no! The description of an event cannot be empty T-T
-Please use: event <desc> /from <start> /to <end>
-Please use: event <desc> /from <start> /to <end>
-Please use: event <desc> /from <start> /to <end>
-Please use: event <desc> /from <start> /to <end>
-Please use: event <desc> /from <start> /to <end>
-Got it. I've added this task:
-  [E][ ] meeting (from: Mon 2pm to: 4pm)
-Now you have 6 tasks in the list.
-Got it. I've added this task:
-  [E][ ] project meeting (from: 1am to: 2pm)
-Now you have 7 tasks in the list.
-Got it. I've added this task:
-  [E][ ] project meeting (from: 1am to: 2pm)
-Now you have 8 tasks in the list.
-Oh no! I don't understand what that means T-T
-Oh no! I don't understand what that means T-T
-Please specify a task number to mark
-Please specify a task number to mark
-sago.task.Task number must be a number!
-sago.task.Task number must be a number!
-sago.task.Task number is out of range!
-sago.task.Task number is out of range!
+Matching tasks:
+1. [T][ ] read book
+2. [D][ ] return book (by: Mar 31 2026)
 Nice! I've marked this task as done:
-[X] read book with many spaces
-Nice! I've marked this task as done:
-[X] readbook
-Nice! I've marked this task as done:
-[X] readbook
-Please specify a task number to unmark
-Please specify a task number to unmark
-sago.task.Task number must be a number!
-sago.task.Task number must be a number!
-sago.task.Task number is out of range!
-sago.task.Task number is out of range!
+  [D][X] return book (by: Mar 31 2026)
 OK, I've marked this task as not done yet:
-[ ] read book with many spaces
-OK, I've marked this task as not done yet:
-[ ] readbook
-OK, I've marked this task as not done yet:
-[ ] readbook
-sago.task.Task number must be a number!
-sago.task.Task number must be a number!
-1.[T][ ] readbook
-2.[T][ ] read book with many spaces
-3.[D][ ] return book (by: Sunday)
-4.[D][ ] return book (by: 3pm)
-5.[D][ ] return book (by: 3pm)
-6.[E][ ] meeting (from: Mon 2pm to: 4pm)
-7.[E][ ] project meeting (from: 1am to: 2pm)
-8.[E][ ] project meeting (from: 1am to: 2pm)
+  [D][ ] return book (by: Mar 31 2026)
+Here are the available commands:
+list
+todo <description>
+deadline <description> /by <yyyy-MM-dd>
+event <description> /from <yyyy-MM-dd> /to <yyyy-MM-dd>
+mark <taskNumber>
+unmark <taskNumber>
+delete <taskNumber>
+find <keyword>
+help
+bye
+Event start date cannot be after end date.
 Bye. Hope to see you again soon!
